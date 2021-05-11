@@ -2,28 +2,127 @@
  <head>
   <meta charset="utf-8">
   <title> Rule 편집 </title>
-  <script type="text/javascript">
-  </script>
+  <script type="text/javascript"></script>
+  <script src="http://code.jquery.com/jquery-latest.min.js"></script>
  </head>
  
  <body>
-    <br/>
- 	Rule
-    <select id="lstFavorite">
-        <option value="">- 선택 -</option>
-        <option value="XHTML">결합 스코어 Cut-Off</option>
-        <option value="javaScript">AS 등급 Cut-Off</option>
-        <option value="CSS">연체 경험자 스코어 등급 Cut-Off</option>
-    </select>
-    조건 
-    <select id="lstFavorite">
-        <option value="">- 선택 -</option>
-        <option value="XHTML"><</option>
-        <option value="javaScript">></option>
-        <option value="CSS">=</option>
-    </select>
- 
-    <input type="button" value="확인" onclick="CheckSelect();"/>
- 
+    <hr>
+ 	<form action="http://10.0.11.94:5000/ins2" method="POST">
+            항목코드 : 
+            <select name="rc" >
+                <option value="">- 선택 -</option>
+                <option value="AS1">AS001</option>
+                <option value="AS2">AS002</option>
+                <option value="AS3">AS003</option>
+                <option value="AS4">AS004</option>
+                <option value="AS5">AS005</option>
+                <option value="AS6">AS006</option>
+                <option value="AS7">AS007</option>
+                <option value="AS8">AS008</option>
+                <option value="AS9">AS009</option>
+            </select>&nbsp;
+            항목명 : 
+            <select name="rn" >
+                <option value="">- 선택 -</option>
+                <option value="AS_01">소비자금융_미해제_채무불이행</option>
+                <option value="AS_02">미해제_채무불이행_건수</option>
+                <option value="AS_03">최근6개월이내최장연체일수</option>
+                <option value="AS_04">NICE_CB등급</option>
+                <option value="AS_05">NICE_SP등급</option>
+                <option value="AS_06">NICE_소득추정등급</option>
+                <option value="AS_07">NICE_소득추정금액</option>
+                <option value="AS_08">NICE_DeP등급</option>
+                <option value="AS_09">NICE_PI등급</option>
+            </select>&nbsp;
+            조건 : 
+            <select name="cd">
+                <option value="">- 선택 -</option>
+                <option value="ormore">>=</option>
+                <option value="above">></option>
+                <option value="equal">=</option>
+                <option value="under"><</option>
+                <option value="orless"><=</option>
+            </select>
+        <span>값 : <input type="text" name="val"></span>
+        <hr>
+        <p><input type="submit" value="확인"/></p>
+    </form>
+    <hr>
+    <br>
+    <form name="formd" method="post">
+    <table width="1000" border="0" cellspacing="0" cellpadding="0">
+      <tr>
+        <td colspan="2" align="left" bgcolor="#FFFFFF">
+          <table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tr>
+             <td colspan="5" bgcolor="#FFFFFF" height="25" align="left">
+             <input name="addButton" type="button" style="cursor:hand" onClick="insRow()" value="추가">
+             <font color="#FF0000">*</font>추가버튼을 클릭해 보세요.</td>
+            </tr>
+            <tr>
+             <td height="25">
+              <table id="addTable" width="1200" cellspacing="0" cellpadding="0" bgcolor="#FFFFFF" border="0" align="center">
+                <tr>
+                  <td><input type="text" name="addText" style="width:350px; height:20px;"></td>
+                  <td align="center"></td>
+                </tr>
+              </table></td>
+            </tr>
+           </table>
+          </td>
+       </tr>
+     </table>
+    <input type="button" name="button" value="확인" onClick="frmCheck();">
+
+
+    <script>
+    var oTbl;
+    //Row 추가
+    function insRow() {
+      oTbl = document.getElementById("addTable");
+      //oTbl = document.getElementById("kise");
+      var oRow = oTbl.insertRow();
+      oRow.onmouseover=function(){oTbl.clickedRowIndex=this.rowIndex}; //clickedRowIndex - 클릭한 Row의 위치를 확인;
+      var oCell = oRow.insertCell();
+
+      //삽입될 Form Tag
+      var frmTag = "<input type=text name=addText style=width:350px; height:20px;>";
+      frmTag += "<input type=button value='삭제' onClick='removeRow()' style='cursor:hand'>";
+      //var frmTag = "<input type=text name=addText style=width:350px; height:20px;> ";
+      oCell.innerHTML = frmTag;
+    }
+    //Row 삭제
+    function removeRow() {
+      oTbl.deleteRow(oTbl.clickedRowIndex);
+    }
+    function addRow() {
+      var form = eval("document.signform");
+
+     if( form.getAttribute('fr_nm') ) //fr_nm이 널일때 처리. name에 fr_nm이 있는지 체크
+     {
+       if (form.fr_nm.length >= 10) //갯수를 최대 10개로 제한
+       {
+      alert("항목은 최대 10개까지 가능합니다.");
+      form.fr_nm(9).focus();
+      return;
+       }
+     }
+    }
+    function frmCheck()
+    {
+      var frm = document.formd;
+      for( var i = 0; i <= frm.elements.length - 1; i++ ){
+         if( frm.elements[i].name == "addText" )
+         {
+             if( !frm.elements[i].value ){
+                alert("텍스트박스에 값을 입력하세요!");
+                frm.elements[i].focus();
+         return;
+              }
+          } 
+       }
+     }
+    </script>
  </body>
 </html>
